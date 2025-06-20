@@ -1,0 +1,53 @@
+using System;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class Node : MonoBehaviour
+{
+    public enum NodeType { Input, Output, Disabled };
+    public NodeType nodeType = NodeType.Disabled;
+
+    [SerializeField]
+    GameObject wire;
+    GismosHandler gismosHandler;
+
+    [SerializeField]
+    NodeValue nodeValue = new NodeValue();
+    public UnityAction onNodeValueChanged;
+
+    void Awake()
+    {
+        gismosHandler = transform.parent.parent.GetComponent<GismosHandler>();
+
+        onNodeValueChanged += OnNodeValueChanged;
+    }
+
+    public void OnClick()
+    {
+        if (gismosHandler.wireBeingDrawn == null)
+        {
+            GameObject newWire = Instantiate(wire, transform.parent.parent);
+            Wire wireComponent = newWire.GetComponent<Wire>();
+            wireComponent.BeginDrawing(GetComponent<RectTransform>(), this, gismosHandler);
+            gismosHandler.wireBeingDrawn = wireComponent;
+        }
+        else
+        {
+            gismosHandler.wireBeingDrawn.EndDrawing(this);
+        }
+    }
+
+    public void SetNodeValue(NodeValue value)
+    {
+        nodeValue = value;
+        onNodeValueChanged.Invoke();
+    }
+
+    public NodeValue GetNodeValue()
+    {
+        return nodeValue;
+    }
+
+    void OnNodeValueChanged() {}
+}
