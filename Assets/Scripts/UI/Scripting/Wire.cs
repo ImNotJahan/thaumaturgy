@@ -10,6 +10,8 @@ public class Wire : MonoBehaviour
     GismosHandler gismosHandler;
 
     InputAction pointAction;
+    InputAction clickAction; // will be used for drawing chained wires in the future
+    InputAction rightClickAction;
 
     Vector2 origin;
 
@@ -24,12 +26,21 @@ public class Wire : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
 
         pointAction = InputSystem.actions.FindAction("Point");
+        clickAction = InputSystem.actions.FindAction("Click");
+        rightClickAction = InputSystem.actions.FindAction("RightClick");
     }
 
     void Update()
     {
         if (drawing)
         {
+            // stop drawing line on right click
+            if (rightClickAction.IsPressed())
+            {
+                gismosHandler.wireBeingDrawn = null;
+                Destroy(gameObject);
+            }
+
             Vector2 end = pointAction.ReadValue<Vector2>();
             DrawLine(origin, end);
 
