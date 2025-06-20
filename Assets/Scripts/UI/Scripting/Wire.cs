@@ -14,6 +14,7 @@ public class Wire : MonoBehaviour
     InputAction rightClickAction;
 
     Vector2 origin;
+    Vector2 end;
 
     public Node valueProvidingNode;
     public Node valueRecievingNode;
@@ -41,7 +42,7 @@ public class Wire : MonoBehaviour
                 Destroy(gameObject);
             }
 
-            Vector2 end = pointAction.ReadValue<Vector2>();
+            end = pointAction.ReadValue<Vector2>();
             DrawLine(origin, end);
 
             //if (clickAction.IsPressed()) drawing = false;
@@ -65,8 +66,11 @@ public class Wire : MonoBehaviour
             valueProvidingNode = originNode;
         else
             valueRecievingNode = originNode;
+
         this.origin = origin.position;
         this.gismosHandler = gismosHandler;
+
+        originNode.gate.onDrag += OnOriginDrag;
     }
 
     public void EndDrawing(Node endNode)
@@ -84,6 +88,9 @@ public class Wire : MonoBehaviour
             drawing = false;
             gismosHandler.wireBeingDrawn = null;
             image.raycastTarget = true;
+
+            endNode.gate.onDrag += OnEndDrag;
+            gismosHandler.scriptingUIHandler.onDrag += OnBackgroundDrag;
         }
     }
 
@@ -101,5 +108,29 @@ public class Wire : MonoBehaviour
             valueRecievingNode.SetNodeValue(new NodeValue());
             Destroy(gameObject);
         }
+    }
+
+    void OnOriginDrag(Vector3 delta)
+    {
+        Vector2 drag = new(delta.x, delta.y);
+        origin += drag;
+
+        DrawLine(origin, end);
+    }
+
+    void OnEndDrag(Vector3 delta)
+    {
+        Vector2 drag = new(delta.x, delta.y);
+        end += drag;
+
+        DrawLine(origin, end);
+    }
+
+    void OnBackgroundDrag(Vector3 delta)
+    {
+        Vector2 drag = new(delta.x, delta.y);
+
+        origin += drag;
+        end += drag;
     }
 }

@@ -1,7 +1,9 @@
-using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class Gate : MonoBehaviour
+public class Gate : MonoBehaviour, IDragHandler
 {
     [SerializeField]
     protected Node[] inputNodes;
@@ -10,11 +12,23 @@ public class Gate : MonoBehaviour
 
     protected bool canExecute = false;
 
-    void Start()
+    RectTransform rectTransform;
+
+    public UnityAction<Vector3> onDrag;
+
+    void Awake()
     {
+        rectTransform = GetComponent<RectTransform>();
+
         foreach (Node inputNode in inputNodes)
         {
             inputNode.onNodeValueChanged += UpdateOutput;
+            inputNode.gate = this;
+        }
+
+        foreach (Node outputNode in outputNodes)
+        {
+            outputNode.gate = this;
         }
     }
 
@@ -40,5 +54,11 @@ public class Gate : MonoBehaviour
         {
             outputNode.SetNodeValue(new NodeValue());
         }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.anchoredPosition += eventData.delta;
+        onDrag?.Invoke(eventData.delta); // only invoke if onDrag isn't null
     }
 }

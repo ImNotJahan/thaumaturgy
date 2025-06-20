@@ -5,19 +5,11 @@ using UnityEngine;
 public class Display : Gate
 {
     [SerializeField]
-    Node inputNode;
-
-    [SerializeField]
     TextMeshProUGUI text;
 
-    void Start()
+    protected override void UpdateOutput()
     {
-        inputNode.onNodeValueChanged += UpdateDisplay;
-    }
-
-    public void UpdateDisplay()
-    {
-        NodeValue value = inputNode.GetNodeValue();
+        NodeValue value = inputNodes[0].GetNodeValue();
 
         if (value.IsNull())
         {

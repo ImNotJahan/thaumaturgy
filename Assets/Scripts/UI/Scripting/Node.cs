@@ -16,6 +16,8 @@ public class Node : MonoBehaviour
     NodeValue nodeValue = new NodeValue();
     public UnityAction onNodeValueChanged;
 
+    public Gate gate;
+
     void Awake()
     {
         gismosHandler = transform.parent.parent.GetComponent<GismosHandler>();

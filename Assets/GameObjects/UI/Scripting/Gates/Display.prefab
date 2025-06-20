@@ -260,7 +260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cb9d45358f0458cb411c23fed72572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputNode: {fileID: 5538638782286224599}
+  inputNodes:
+  - {fileID: 5538638782286224599}
+  outputNodes: []
   text: {fileID: 7253476242193125872}
 --- !u!222 &1097264899216261167
 CanvasRenderer:
