@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BooleanGate : Gate
+public abstract class BooleanGate : Gate
 {
     protected override void UpdateOutput()
     {

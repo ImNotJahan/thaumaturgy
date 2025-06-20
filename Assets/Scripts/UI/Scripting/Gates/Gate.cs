@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
+public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
     [SerializeField]
     protected Node[] inputNodes;
@@ -18,7 +18,7 @@ public class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     public UnityAction<Vector3> onDrag;
     public UnityAction onDestroy;
 
-    GismosHandler gismosHandler;
+    protected GismosHandler gismosHandler;
     bool placing = false;
 
     InputAction pointAction;
@@ -99,5 +99,12 @@ public class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
             onDestroy?.Invoke();
             Destroy(gameObject);
         }
+    }
+
+    public abstract String GetCode();
+
+    public Node[] GetInputNodes()
+    {
+        return inputNodes;
     }
 }

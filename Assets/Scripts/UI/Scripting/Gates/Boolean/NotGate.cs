@@ -1,5 +1,10 @@
 public class NotGate : BooleanGate
 {
+    public override string GetCode()
+    {
+        return "not";
+    }
+
     protected override void UpdateOutput()
     {
         base.UpdateOutput();

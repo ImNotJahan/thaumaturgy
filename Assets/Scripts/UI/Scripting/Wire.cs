@@ -89,6 +89,7 @@ public class Wire : MonoBehaviour
             else valueProvidingNode = endNode;
 
             UpdateValueRecievingNode();
+            valueRecievingNode.connectedNode = valueProvidingNode;
             valueProvidingNode.onNodeValueChanged += UpdateValueRecievingNode;
 
             drawing = false;
@@ -126,6 +127,7 @@ public class Wire : MonoBehaviour
         endGate.onDestroy -= DestroyWire;
 
         valueRecievingNode.SetNodeValue(new NodeValue());
+        valueRecievingNode.connectedNode = null;
         Destroy(gameObject);
     }
 

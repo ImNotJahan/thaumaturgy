@@ -1,5 +1,10 @@
 public class AndGate : BooleanGate
 {
+    public override string GetCode()
+    {
+        return "and";
+    }
+
     protected override void UpdateOutput()
     {
         base.UpdateOutput();

@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,12 +15,11 @@ public class Node : MonoBehaviour
     public UnityAction onNodeValueChanged;
 
     public Gate gate;
+    public Node connectedNode;
 
     void Awake()
     {
         gismosHandler = transform.parent.parent.GetComponent<GismosHandler>();
-
-        onNodeValueChanged += OnNodeValueChanged;
     }
 
     public void OnClick()
@@ -43,13 +40,11 @@ public class Node : MonoBehaviour
     public void SetNodeValue(NodeValue value)
     {
         nodeValue = value;
-        onNodeValueChanged.Invoke();
+        onNodeValueChanged?.Invoke();
     }
 
     public NodeValue GetNodeValue()
     {
         return nodeValue;
     }
-
-    void OnNodeValueChanged() {}
 }

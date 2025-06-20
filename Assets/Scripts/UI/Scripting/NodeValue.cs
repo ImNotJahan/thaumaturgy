@@ -33,4 +33,34 @@ public class NodeValue
     {
         return valueType == ValueType.Null;
     }
+
+    public override string ToString()
+    {
+        string value;
+
+        switch (valueType)
+        {
+            case ValueType.Number:
+                value = Convert.ToString(numberValue);
+                break;
+
+            case ValueType.Boolean:
+                value = Convert.ToString(booleanValue);
+                break;
+
+            case ValueType.Vector2D:
+                value = Convert.ToString(vector2DValue);
+                break;
+
+            case ValueType.Vector3D:
+                value = Convert.ToString(vector3DValue);
+                break;
+
+            default:
+                value = "NULL";
+                break;
+        }
+
+        return value;
+    }
 }

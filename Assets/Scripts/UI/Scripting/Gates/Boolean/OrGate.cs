@@ -1,5 +1,10 @@
 public class OrGate : BooleanGate
 {
+    public override string GetCode()
+    {
+        return "or";
+    }
+
     protected override void UpdateOutput()
     {
         base.UpdateOutput();
