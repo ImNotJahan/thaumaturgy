@@ -52,9 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9abd17e0074143f4bee42fe1c713d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputNode1: {fileID: 3008682820157196524}
-  inputNode2: {fileID: 4200267990441789675}
-  outputNode: {fileID: 1177871994853745963}
+  inputNodes:
+  - {fileID: 3008682820157196524}
+  - {fileID: 4200267990441789675}
+  outputNodes:
+  - {fileID: 1177871994853745963}
 --- !u!1 &6403968754817655327
 GameObject:
   m_ObjectHideFlags: 0

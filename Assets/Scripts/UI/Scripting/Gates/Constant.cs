@@ -3,12 +3,12 @@ using UnityEngine;
 public class Constant : Gate
 {
     [SerializeField]
-    Node outputNode;
-    [SerializeField]
     NodeValue value;
 
     void Start()
     {
-        outputNode.SetNodeValue(value);
+        outputNodes[0].SetNodeValue(value);
+
+        // no need to call base here, as value of a constant never updates
     }
 }

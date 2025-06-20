@@ -123,8 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f199625d0724553a49365f2153f9bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputNode: {fileID: 398538144095533673}
-  outputNode: {fileID: 9000599175812644640}
+  inputNodes:
+  - {fileID: 398538144095533673}
+  outputNodes:
+  - {fileID: 9000599175812644640}
 --- !u!1001 &534908905408724091
 PrefabInstance:
   m_ObjectHideFlags: 0

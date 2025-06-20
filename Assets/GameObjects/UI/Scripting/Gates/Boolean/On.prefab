@@ -50,7 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbeb1f2fe679749d98c252e54884cdc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputNode: {fileID: 63604770271041353}
+  inputNodes: []
+  outputNodes:
+  - {fileID: 63604770271041353}
   value:
     valueType: 1
     numberValue: 0
