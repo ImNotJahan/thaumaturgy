@@ -1144,6 +1144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wireBeingDrawn: {fileID: 0}
+  scriptingUIHandler: {fileID: 1263151274}
 --- !u!1 &1145739165
 GameObject:
   m_ObjectHideFlags: 0
