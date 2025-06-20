@@ -24,7 +24,7 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     InputAction pointAction;
     InputAction clickAction; // will be used for drawing chained wires in the future
 
-    void Awake()
+    protected virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
 

@@ -27,7 +27,7 @@ public class InteractHandler : MonoBehaviour
             if (!wasInteracting)
             {
                 wasInteracting = true;
-
+                
                 // cast ray from camera in direction player is looking
                 RaycastHit hit;
                 if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, maxInteractDistance))

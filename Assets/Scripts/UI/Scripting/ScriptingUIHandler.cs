@@ -1,6 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class ScriptingUIHandler : MonoBehaviour
 {
@@ -9,8 +11,14 @@ public class ScriptingUIHandler : MonoBehaviour
 
     public UnityAction<Vector3> onDrag;
 
+    InputAction exitAction;
+
+    public UnityAction close;
+
     void Start()
     {
+        exitAction = InputSystem.actions.FindAction("Exit");
+
         gameObject.SetActive(false);
     }
 
@@ -20,5 +28,13 @@ public class ScriptingUIHandler : MonoBehaviour
 
         gismosRectTransform.anchoredPosition += data.delta;
         onDrag?.Invoke(data.delta);
+    }
+
+    void Update()
+    {
+        if (exitAction.IsPressed())
+        {
+            close?.Invoke();
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIHandler : MonoBehaviour
@@ -9,6 +10,8 @@ public class UIHandler : MonoBehaviour
     {
         lockCursor();
         playerMovement = GetComponent<PlayerMovement>();
+
+        scriptingUI.GetComponent<ScriptingUIHandler>().close += CloseScriptingUI;
     }
 
     private void lockCursor()
@@ -26,5 +29,12 @@ public class UIHandler : MonoBehaviour
         unlockCursor();
         scriptingUI.SetActive(true);
         playerMovement.SetCanMove(false);
+    }
+
+    void CloseScriptingUI()
+    {
+        lockCursor();
+        scriptingUI.SetActive(false);
+        playerMovement.SetCanMove(true);
     }
 }

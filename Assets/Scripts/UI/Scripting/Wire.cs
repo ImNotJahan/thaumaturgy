@@ -73,9 +73,6 @@ public class Wire : MonoBehaviour
         this.origin = origin.position;
         this.gismosHandler = gismosHandler;
 
-        originNode.gate.onDrag += OnOriginDrag;
-        originNode.gate.onDestroy += DestroyWire;
-
         originGate = originNode.gate;
     }
 
@@ -100,6 +97,10 @@ public class Wire : MonoBehaviour
             gismosHandler.scriptingUIHandler.onDrag += OnBackgroundDrag;
 
             endNode.gate.onDestroy += DestroyWire;
+
+
+            originGate.onDrag += OnOriginDrag;
+            originGate.onDestroy += DestroyWire;
 
             endGate = endNode.gate;
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GismosHandler : MonoBehaviour
@@ -9,6 +10,8 @@ public class GismosHandler : MonoBehaviour
     public ScriptingUIHandler scriptingUIHandler;
 
     public List<Gate> thaumaturgicGates = new List<Gate>();
+
+    public Action<String> spellTranspiled;
 
     public void TranspileGates()
     {
@@ -20,6 +23,7 @@ public class GismosHandler : MonoBehaviour
         }
 
         Debug.Log(transpiledCode.ToString());
+        spellTranspiled?.Invoke(transpiledCode.ToString());
     }
 
     void ExploreGates(Gate gate, StringBuilder stringBuilder)

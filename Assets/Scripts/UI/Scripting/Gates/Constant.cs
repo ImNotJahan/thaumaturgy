@@ -4,7 +4,7 @@ using UnityEngine;
 public class Constant : Gate
 {
     [SerializeField]
-    NodeValue value;
+    protected NodeValue value;
 
     public override string GetCode()
     {
