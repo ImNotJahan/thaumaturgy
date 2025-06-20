@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class Gate : MonoBehaviour, IDragHandler
+public class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
     [SerializeField]
     protected Node[] inputNodes;
@@ -15,6 +16,13 @@ public class Gate : MonoBehaviour, IDragHandler
     RectTransform rectTransform;
 
     public UnityAction<Vector3> onDrag;
+    public UnityAction onDestroy;
+
+    GismosHandler gismosHandler;
+    bool placing = false;
+
+    InputAction pointAction;
+    InputAction clickAction; // will be used for drawing chained wires in the future
 
     void Awake()
     {
@@ -29,6 +37,22 @@ public class Gate : MonoBehaviour, IDragHandler
         foreach (Node outputNode in outputNodes)
         {
             outputNode.gate = this;
+        }
+
+        pointAction = InputSystem.actions.FindAction("Point");
+        clickAction = InputSystem.actions.FindAction("Click");
+    }
+
+    void Update()
+    {
+        if (placing)
+        {
+            transform.position = pointAction.ReadValue<Vector2>();
+
+            if (clickAction.IsPressed())
+            {
+                placing = false;
+            }
         }
     }
 
@@ -60,5 +84,20 @@ public class Gate : MonoBehaviour, IDragHandler
     {
         rectTransform.anchoredPosition += eventData.delta;
         onDrag?.Invoke(eventData.delta); // only invoke if onDrag isn't null
+    }
+
+    public void Place(GismosHandler gismosHandler)
+    {
+        this.gismosHandler = gismosHandler;
+        placing = true;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            onDestroy?.Invoke();
+            Destroy(gameObject);
+        }
     }
 }

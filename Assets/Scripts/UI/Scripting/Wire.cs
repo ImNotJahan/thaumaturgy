@@ -19,6 +19,9 @@ public class Wire : MonoBehaviour
     public Node valueProvidingNode;
     public Node valueRecievingNode;
 
+    Gate originGate;
+    Gate endGate;
+
     bool drawing = true;
 
     void Awake()
@@ -71,6 +74,9 @@ public class Wire : MonoBehaviour
         this.gismosHandler = gismosHandler;
 
         originNode.gate.onDrag += OnOriginDrag;
+        originNode.gate.onDestroy += DestroyWire;
+
+        originGate = originNode.gate;
     }
 
     public void EndDrawing(Node endNode)
@@ -91,6 +97,10 @@ public class Wire : MonoBehaviour
 
             endNode.gate.onDrag += OnEndDrag;
             gismosHandler.scriptingUIHandler.onDrag += OnBackgroundDrag;
+
+            endNode.gate.onDestroy += DestroyWire;
+
+            endGate = endNode.gate;
         }
     }
 
@@ -103,11 +113,20 @@ public class Wire : MonoBehaviour
     {
         PointerEventData data = (PointerEventData)eventData;
 
-        if (data.button == PointerEventData.InputButton.Right)
-        {
-            valueRecievingNode.SetNodeValue(new NodeValue());
-            Destroy(gameObject);
-        }
+        if (data.button == PointerEventData.InputButton.Right) DestroyWire();
+    }
+
+    void DestroyWire()
+    {
+        // make sure to unsubscribe from drag events to avoid null pointer errors
+        gismosHandler.scriptingUIHandler.onDrag -= OnBackgroundDrag;
+        originGate.onDrag -= OnOriginDrag;
+        originGate.onDestroy -= DestroyWire;
+        endGate.onDrag -= OnEndDrag;
+        endGate.onDestroy -= DestroyWire;
+
+        valueRecievingNode.SetNodeValue(new NodeValue());
+        Destroy(gameObject);
     }
 
     void OnOriginDrag(Vector3 delta)
