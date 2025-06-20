@@ -15,7 +15,7 @@ public class Node : MonoBehaviour
     public UnityAction onNodeValueChanged;
 
     public Gate gate;
-    public Node connectedNode;
+    public Node connectedNode; // only is set if this is an input node
 
     void Awake()
     {
