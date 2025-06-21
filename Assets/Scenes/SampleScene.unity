@@ -343,7 +343,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1654,7 +1654,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!23 &1513092757
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1707,7 +1707,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513092755}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5495902117074765545, guid: 61683b0600f2e44b8b53558c930b3e95, type: 3}
 --- !u!4 &1513092759
 Transform:
   m_ObjectHideFlags: 0
@@ -1716,13 +1716,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513092755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.257, y: 0.5, z: -1.81013}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.257, y: 0, z: -1.81013}
+  m_LocalScale: {x: 1.51, y: 1.51, z: 1.51}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &1513092760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1868,6 +1868,8 @@ MonoBehaviour:
     - {fileID: 8925741030933490678, guid: e8194aeea6b0047af8daf0b8c8460f54, type: 3}
     - {fileID: 1634866754467531045, guid: 38bfe179383f8497f9e112484d4aff30, type: 3}
     - {fileID: 3774820091253877785, guid: 334d4260214fc4794a59ac02adb59808, type: 3}
+    - {fileID: 3016671787414209178, guid: 6793864fc5ba54e0ca9acfd1620de156, type: 3}
+    - {fileID: 2681090802131363556, guid: 65e7d159d66364d71b1c65b32c00cee6, type: 3}
   - array:
     - {fileID: 28201250834139770, guid: d5a850df0f80d45aabd6d87823c0b9d9, type: 3}
     - {fileID: 552126468695531595, guid: 63a5ca985c240414d821eedbf5b86676, type: 3}
