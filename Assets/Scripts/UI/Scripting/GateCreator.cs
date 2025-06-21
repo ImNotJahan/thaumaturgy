@@ -3,10 +3,8 @@ using UnityEngine.EventSystems;
 
 public class GateCreator : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField]
-    GameObject gate;
-    [SerializeField]
-    GameObject gismosHandler;
+    public GameObject gate;
+    public GameObject gismosHandler;
 
     public void OnPointerClick(PointerEventData eventData)
     {
