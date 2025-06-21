@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ThaumaturgicInterpreter : MonoBehaviour
 {
@@ -13,8 +12,14 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     Transform cameraTransform;
 
     Dictionary<string, (Delegate fn, int arguments)> codeToFn = new();
+    Dictionary<string, string> syllables = new Dictionary<string, string>
+    {
+        {"and", "en"}, {"or", "in"}, {"not", "ta"}, {"display", "tt"},
+        { "add_force", "ll"}, {"player_facing", "is"}, {"player_position", "ka"}, {"vector3", "li"},
+        { "ray", "it"}, {"object_raycast", "an"}
+    };
 
-    public void Interpret(String spell)
+    public void InterpretInstantaneously(String spell)
     {
         string[] codes = spell.Split(' ');
         Stack stack = new Stack();
@@ -40,6 +45,38 @@ public class ThaumaturgicInterpreter : MonoBehaviour
                 stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
             }
         }
+    }
+
+    public IEnumerable<String> InterpretOverTime(String spell)
+    {
+        string[] codes = spell.Split(' ');
+        Stack stack = new Stack();
+
+        for (int i = codes.Length - 1; i >= 0; i--)
+        {
+            if (codes[i] == "") continue;
+            if (codes[i][0] == '>') // is constant value
+            {
+                stack.Push(parseConstant(codes[i]));
+                yield return " ";
+            }
+            else
+            {
+                object[] arguments = new object[codeToFn[codes[i]].arguments];
+                // because we are reading the spell backwards, we need to reverse arguments for them to be in the right order
+                Array.Reverse(arguments);
+
+                for (int j = 0; j < arguments.Length; j++)
+                {
+                    arguments[j] = stack.Pop();
+                }
+
+                stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
+                yield return syllables[codes[i]];
+            }
+        }
+
+        yield return "END";
     }
 
     object parseConstant(string code)
