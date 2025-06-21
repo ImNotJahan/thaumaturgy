@@ -52,7 +52,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         string[] codes = spell.Split(' ');
         Stack stack = new Stack();
 
-        for (int i = codes.Length - 1; i >= 0; i--)
+        for (int i = 0; i < codes.Length; i++)
         {
             if (codes[i] == "") continue;
             if (codes[i][0] == '>') // is constant value
@@ -63,10 +63,8 @@ public class ThaumaturgicInterpreter : MonoBehaviour
             else
             {
                 object[] arguments = new object[codeToFn[codes[i]].arguments];
-                // because we are reading the spell backwards, we need to reverse arguments for them to be in the right order
-                Array.Reverse(arguments);
 
-                for (int j = 0; j < arguments.Length; j++)
+                for (int j = arguments.Length - 1; j >= 0; j--)
                 {
                     arguments[j] = stack.Pop();
                 }

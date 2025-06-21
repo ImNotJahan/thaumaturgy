@@ -28,12 +28,12 @@ public class GismosHandler : MonoBehaviour
 
     void ExploreGates(Gate gate, StringBuilder stringBuilder)
     {
-        stringBuilder.Append(gate.GetCode());
-        stringBuilder.Append(" ");
-
         foreach (Node input in gate.GetInputNodes())
         {
             ExploreGates(input.connectedNode.gate, stringBuilder);
         }
+
+        stringBuilder.Append(gate.GetCode());
+        stringBuilder.Append(" ");
     }
 }
