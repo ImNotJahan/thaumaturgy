@@ -148,7 +148,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
 
     object AddForce(Transform obj, Vector3 force)
     {
-        obj.GetComponent<Rigidbody>().AddForce(force);
+        obj.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
         return null;
     }
 

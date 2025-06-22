@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     CharacterController controller;
     [SerializeField]
     Transform cameraTransform;
+    Player player;
 
     // (to be tweaked externally) variables
     [SerializeField]
@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     float lookSensitivity = 5f;
     [SerializeField]
     float sprintModifier = 2f;
+    [SerializeField]
+    float jumpVelocity = 3;
 
     // input actions
     InputAction moveAction;
@@ -25,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     InputAction jumpAction;
 
     private bool canMove = true;
+    Vector3 velocity = Vector3.zero;
 
     void Start()
     {
@@ -35,11 +38,17 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
 
         controller = GetComponent<CharacterController>();
+        player = GetComponent<Player>();
+
+        jumpAction.started += Jump;
     }
 
     void Update()
     {
         if (!canMove) return;
+
+        if (!player.IsGrounded()) velocity.y -= 9.81f * Time.deltaTime;
+        else if(controller.velocity.y == 0 && velocity.y < 0) velocity.y = 0;
 
         // handle movement
         Vector2 direction2D = moveAction.ReadValue<Vector2>();
@@ -51,9 +60,8 @@ public class PlayerMovement : MonoBehaviour
         direction2D *= sprintAction.IsPressed() ? sprintModifier : 1;
 
         Vector3 direction = direction2D.x * transform.right + direction2D.y * transform.forward; // convert 2d direction to 3d
-        controller.Move(direction);
+        controller.Move(direction + velocity * Time.deltaTime);
 
-        // TODO: add jumping
         // TODO: add crouching
 
         // handle look
@@ -70,5 +78,11 @@ public class PlayerMovement : MonoBehaviour
     public void SetCanMove(bool value)
     {
         canMove = value;
+    }
+
+    void Jump(InputAction.CallbackContext ctx)
+    {
+        if (player.IsGrounded())
+            velocity.y = jumpVelocity;
     }
 }

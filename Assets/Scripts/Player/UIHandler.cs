@@ -5,6 +5,8 @@ public class UIHandler : MonoBehaviour
 {
     public GameObject scriptingUI;
     private PlayerMovement playerMovement;
+    [SerializeField]
+    GameObject crosshair;
 
     void Start()
     {
@@ -17,11 +19,13 @@ public class UIHandler : MonoBehaviour
     private void lockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        crosshair.SetActive(true);
     }
 
     private void unlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
+        crosshair.SetActive(false);
     }
 
     public void OpenScriptingUI()
