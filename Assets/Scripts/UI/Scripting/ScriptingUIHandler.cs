@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -7,6 +6,7 @@ using UnityEngine.InputSystem;
 public class ScriptingUIHandler : MonoBehaviour
 {
     [SerializeField]
+    GismosHandler gismosHandler;
     RectTransform gismosRectTransform;
 
     public UnityAction<Vector3> onDrag;
@@ -15,9 +15,15 @@ public class ScriptingUIHandler : MonoBehaviour
 
     public UnityAction close;
 
+    [SerializeField]
+    Canvas canvas;
+
     void Start()
     {
         exitAction = InputSystem.actions.FindAction("Exit");
+
+        gismosHandler.canvasScale = canvas.scaleFactor;
+        gismosRectTransform = gismosHandler.GetComponent<RectTransform>();
 
         gameObject.SetActive(false);
     }
@@ -26,7 +32,7 @@ public class ScriptingUIHandler : MonoBehaviour
     {
         PointerEventData data = (PointerEventData)eventData;
 
-        gismosRectTransform.anchoredPosition += data.delta;
+        gismosRectTransform.anchoredPosition += data.delta / canvas.scaleFactor;
         onDrag?.Invoke(data.delta);
     }
 

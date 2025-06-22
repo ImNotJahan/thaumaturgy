@@ -60,7 +60,7 @@ public class Wire : MonoBehaviour
 
         Vector2 direction = end - origin;
         rectTransform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        rectTransform.localScale = new Vector3(direction.magnitude, 1f, 1f);
+        rectTransform.localScale = new Vector3(direction.magnitude, 1f, 1f) / gismosHandler.canvasScale;
     }
 
     public void BeginDrawing(RectTransform origin, Node originNode, GismosHandler gismosHandler)

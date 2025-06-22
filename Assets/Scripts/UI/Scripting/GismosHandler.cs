@@ -9,6 +9,8 @@ public class GismosHandler : MonoBehaviour
     public Wire wireBeingDrawn = null;
     public ScriptingUIHandler scriptingUIHandler;
 
+    public float canvasScale = 1;
+
     public List<Gate> thaumaturgicGates = new List<Gate>();
 
     public Action<String> spellTranspiled;

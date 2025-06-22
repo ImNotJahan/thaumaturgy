@@ -22,34 +22,6 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         { "ray", "it"}, {"object_raycast", "an"}
     };
 
-    public void InterpretInstantaneously(String spell)
-    {
-        string[] codes = spell.Split(' ');
-        Stack stack = new Stack();
-
-        for (int i = codes.Length - 1; i >= 0; i--)
-        {
-            if (codes[i] == "") continue;
-            if (codes[i][0] == '>') // is constant value
-            {
-                stack.Push(parseConstant(codes[i]));
-            }
-            else
-            {
-                object[] arguments = new object[codeToFn[codes[i]].arguments];
-                // because we are reading the spell backwards, we need to reverse arguments for them to be in the right order
-                Array.Reverse(arguments);
-
-                for (int j = 0; j < arguments.Length; j++)
-                {
-                    arguments[j] = stack.Pop();
-                }
-
-                stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
-            }
-        }
-    }
-
     // Interprets over time + charges mana
     public IEnumerable<string> InterpretFancily(string spell, Player player)
     {

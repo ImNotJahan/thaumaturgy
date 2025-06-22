@@ -82,7 +82,10 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta;
+        // the scale of the canvas does not affect the drag delta, so we need to divide it by the canvas scale so that it looks like it matches
+        float canvasScale = gismosHandler != null ? gismosHandler.canvasScale : 1;
+
+        rectTransform.anchoredPosition += eventData.delta / canvasScale;
         onDrag?.Invoke(eventData.delta); // only invoke if onDrag isn't null
     }
 
