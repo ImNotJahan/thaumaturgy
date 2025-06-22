@@ -11,6 +11,8 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     [SerializeField]
     Transform cameraTransform;
     Player player;
+    [SerializeField]
+    SpellParticlesHandler spellParticlesHandler;
 
     Dictionary<string, (Delegate fn, int arguments)> codeToFn = new();
     Dictionary<string, string> syllables = new Dictionary<string, string>
@@ -73,7 +75,15 @@ public class ThaumaturgicInterpreter : MonoBehaviour
                     arguments[j] = stack.Pop();
                 }
 
-                stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
+                try
+                {
+                    stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+
                 yield return syllables[codes[i]];
             }
         }
@@ -140,13 +150,14 @@ public class ThaumaturgicInterpreter : MonoBehaviour
 
     Transform ObjectRaycast(Ray ray, int maxDistance)
     {
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, maxDistance);
+        spellParticlesHandler.DrawRay(ray, maxDistance);
+
         if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
         {
             return hit.transform;
         }
 
-        Debug.LogError("Raycast did not hit anything");
+        Debug.LogWarning("Raycast did not hit anything");
         return null;
     }
 
@@ -155,6 +166,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         obj.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
         player.UseMana(Math.Max((int)Mathf.Pow(force.magnitude - 100, 2), 100));
+        spellParticlesHandler.CastSparkles();
 
         return null;
     }
