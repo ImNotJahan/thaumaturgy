@@ -7,9 +7,9 @@ using UnityEngine.InputSystem;
 
 public class SpellcastingHandler : MonoBehaviour
 {
-    public String currentSpell;
+    public string currentSpell;
 
-    IEnumerator<String> cast;
+    IEnumerator<string> cast;
     bool casting = false;
     float timeSinceLastSyllable = 0f;
 
@@ -22,6 +22,7 @@ public class SpellcastingHandler : MonoBehaviour
     GismosHandler gismosHandler;
     [SerializeField]
     TextMeshProUGUI spellText;
+    Player player;
 
     InputAction castAction;
 
@@ -29,6 +30,7 @@ public class SpellcastingHandler : MonoBehaviour
     {
         gismosHandler.spellTranspiled += SetSpell;
         castAction = InputSystem.actions.FindAction("Cast");
+        player = GetComponent<Player>();
     }
 
     void Update()
@@ -37,7 +39,7 @@ public class SpellcastingHandler : MonoBehaviour
         {
             if (!casting)
             {
-                cast = thaumaturgicInterpreter.InterpretOverTime(currentSpell).GetEnumerator();
+                cast = thaumaturgicInterpreter.InterpretFancily(currentSpell, player).GetEnumerator();
                 casting = true;
             }
             else casting = false;

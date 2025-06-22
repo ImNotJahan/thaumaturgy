@@ -10,6 +10,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     TextMeshProUGUI displayText;
     [SerializeField]
     Transform cameraTransform;
+    Player player;
 
     Dictionary<string, (Delegate fn, int arguments)> codeToFn = new();
     Dictionary<string, string> syllables = new Dictionary<string, string>
@@ -47,8 +48,11 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         }
     }
 
-    public IEnumerable<String> InterpretOverTime(String spell)
+    // Interprets over time + charges mana
+    public IEnumerable<string> InterpretFancily(string spell, Player player)
     {
+        this.player = player;
+
         string[] codes = spell.Split(' ');
         Stack stack = new Stack();
 
@@ -149,6 +153,9 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     object AddForce(Transform obj, Vector3 force)
     {
         obj.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+
+        player.UseMana(Math.Max((int)Mathf.Pow(force.magnitude - 100, 2), 100));
+
         return null;
     }
 

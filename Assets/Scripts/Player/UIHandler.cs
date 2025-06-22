@@ -5,8 +5,13 @@ public class UIHandler : MonoBehaviour
 {
     public GameObject scriptingUI;
     private PlayerMovement playerMovement;
+
     [SerializeField]
     GameObject crosshair;
+    [SerializeField]
+    GameObject healthBar;
+    [SerializeField]
+    GameObject manaBar;
 
     void Start()
     {
@@ -20,12 +25,16 @@ public class UIHandler : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         crosshair.SetActive(true);
+        manaBar.SetActive(true);
+        healthBar.SetActive(true);
     }
 
     private void unlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         crosshair.SetActive(false);
+        manaBar.SetActive(false);
+        healthBar.SetActive(false);
     }
 
     public void OpenScriptingUI()
