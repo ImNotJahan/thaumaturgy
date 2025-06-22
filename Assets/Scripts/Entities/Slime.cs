@@ -8,6 +8,8 @@ public class Slime : Entity
     Rigidbody body;
     [SerializeField]
     Renderer slimeRenderer;
+    [SerializeField]
+    GameObject deathAnimation;
 
     bool followingPlayer = false;
     bool jumping = false;
@@ -81,5 +83,12 @@ public class Slime : Entity
     {
         base.Hurt(amount);
         slimeRenderer.material.SetFloat("_Health", health / (float)MAX_HEALTH);
+    }
+
+    protected override void Die()
+    {
+        GameObject animation = Instantiate(deathAnimation);
+        animation.transform.position = transform.position + Vector3.up * 0.25f;
+        base.Die();
     }
 }
