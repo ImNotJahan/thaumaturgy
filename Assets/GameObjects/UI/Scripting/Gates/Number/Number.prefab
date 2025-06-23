@@ -344,12 +344,15 @@ MonoBehaviour:
   inputNodes: []
   outputNodes:
   - {fileID: 4948278585723699652}
+  gismosHandler: {fileID: 0}
+  id: 0
   value:
     valueType: 0
     numberValue: 0
     booleanValue: 0
     vector2DValue: {x: 0, y: 0}
     vector3DValue: {x: 0, y: 0, z: 0}
+  input: {fileID: 6778115995810715}
 --- !u!1 &8458405141633650762
 GameObject:
   m_ObjectHideFlags: 0

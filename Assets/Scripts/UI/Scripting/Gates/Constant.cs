@@ -29,7 +29,7 @@ public class Constant : Gate
                 break;
 
             case NodeValue.ValueType.Number:
-                data.gate_code = "constant_number" + value.numberValue;
+                data.gate_code = "#" + value.numberValue;
                 break;
         }
 
@@ -40,11 +40,9 @@ public class Constant : Gate
     {
         base.Deserialize(data);
 
-        switch (data.gate_code)
+        if (data.gate_code[0] == '#')
         {
-            case "constant_number":
-                value.numberValue = 0;
-                break;
+            ((ConstantNumberGate)this).UpdateValue(data.gate_code[1..], true);
         }
     }
 }

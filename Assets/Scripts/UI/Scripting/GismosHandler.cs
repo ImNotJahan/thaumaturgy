@@ -139,6 +139,7 @@ public class GismosHandler : MonoBehaviour
 
     GameObject GetGateObjectFromCode(string code)
     {
+        if (code[0] == '#') return codeToGateObject["constant_number"];
         return codeToGateObject[code];
     }
 }
