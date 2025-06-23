@@ -53,6 +53,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeType: 0
   wire: {fileID: 2229498425545982577, guid: 09e39fab3c4304eec8dda333127985df, type: 3}
+  nodeValue:
+    valueType: 4
+    numberValue: 0
+    booleanValue: 0
+    vector2DValue: {x: 0, y: 0}
+    vector3DValue: {x: 0, y: 0, z: 0}
+  gate: {fileID: 0}
+  connectedNode: {fileID: 0}
+  id: 0
 --- !u!222 &5614389703922284349
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -73,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d97c925e2cab84087ae65970996e2ccd, type: 2}
   m_Color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -81,7 +90,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 8520b8f1556f84c199a7596aa8e7ac98, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

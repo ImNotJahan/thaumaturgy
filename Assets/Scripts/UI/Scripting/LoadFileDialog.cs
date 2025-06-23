@@ -10,11 +10,6 @@ public class LoadFileDialog : MonoBehaviour
     [SerializeField]
     Transform content;
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void PopulateFiles()
     {
         ClearFiles();
@@ -39,7 +34,7 @@ public class LoadFileDialog : MonoBehaviour
     {
         foreach (Transform child in content)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
     }
 }

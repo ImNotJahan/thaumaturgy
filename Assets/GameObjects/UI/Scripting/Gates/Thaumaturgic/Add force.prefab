@@ -65,6 +65,8 @@ MonoBehaviour:
   - {fileID: 5803158644479171214}
   - {fileID: 2351969564043851144}
   outputNodes: []
+  gismosHandler: {fileID: 0}
+  id: 0
   code: add_force
 --- !u!1 &1442678868039167985
 GameObject:
@@ -123,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 164d5c4c393a641b5ae4fc7947bf0353, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -131,7 +133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 66473c22b690c451da21fe2c1c4bc070, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -173,7 +175,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 90, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4359180420862268012
 CanvasRenderer:
@@ -348,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3570188382463559985, guid: d8a4678513b1746788ab2a8e69250886, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -50
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 3570188382463559985, guid: d8a4678513b1746788ab2a8e69250886, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -465,7 +467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3570188382463559985, guid: d8a4678513b1746788ab2a8e69250886, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -50
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 3570188382463559985, guid: d8a4678513b1746788ab2a8e69250886, type: 3}
       propertyPath: m_AnchoredPosition.y

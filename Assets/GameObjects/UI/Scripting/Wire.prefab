@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb763d4867c74bfc8a344ed36240a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gismosHandler: {fileID: 0}
   valueProvidingNode: {fileID: 0}
   valueRecievingNode: {fileID: 0}
 --- !u!222 &-238434457554764571
@@ -74,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6132076, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0

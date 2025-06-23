@@ -208,7 +208,7 @@ public class Wire : MonoBehaviour
 
         BeginDrawing(origin, gismosHandler.GetGate(data.origin_gate).GetNode(data.origin_node), gismosHandler);
         DrawLine(origin, end);
-        EndDrawing(gismosHandler.GetGate(data.end_gate).GetNode(data.origin_node));
+        EndDrawing(gismosHandler.GetGate(data.end_gate).GetNode(data.end_node));
     }
 }
 

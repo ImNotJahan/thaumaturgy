@@ -137,7 +137,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     {
         obj.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
-        player.UseMana(Math.Max((int)Mathf.Pow(force.magnitude - 100, 2), 100));
+        player.UseMana(Math.Max((int)Mathf.Pow(Math.Max(force.magnitude - 100, 2), 0), 100));
         spellParticlesHandler.CastSparkles();
 
         return null;

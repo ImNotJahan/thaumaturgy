@@ -67,6 +67,8 @@ MonoBehaviour:
   - {fileID: 1215844217744176556}
   outputNodes:
   - {fileID: 8907324571857117252}
+  gismosHandler: {fileID: 0}
+  id: 0
   code: ray
 --- !u!1 &1088067434269332113
 GameObject:
@@ -104,7 +106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 0}
+  m_AnchoredPosition: {x: 60, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8907324571857117252
@@ -129,6 +131,7 @@ MonoBehaviour:
     vector3DValue: {x: 0, y: 0, z: 0}
   gate: {fileID: 0}
   connectedNode: {fileID: 0}
+  id: 0
 --- !u!222 &3791179542426980715
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -149,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: -876546973899608171, guid: d6f1554d8018d4004a03f9b3735075d5, type: 3}
   m_Color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -157,7 +160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 8520b8f1556f84c199a7596aa8e7ac98, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -256,7 +259,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: 30}
+  m_AnchoredPosition: {x: -60, y: 30}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1584918311169307665
@@ -281,6 +284,7 @@ MonoBehaviour:
     vector3DValue: {x: 0, y: 0, z: 0}
   gate: {fileID: 0}
   connectedNode: {fileID: 0}
+  id: 0
 --- !u!222 &6556985948640527678
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -301,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: -876546973899608171, guid: d6f1554d8018d4004a03f9b3735075d5, type: 3}
   m_Color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -309,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 8520b8f1556f84c199a7596aa8e7ac98, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -408,7 +412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: -30}
+  m_AnchoredPosition: {x: -60, y: -30}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1215844217744176556
@@ -433,6 +437,7 @@ MonoBehaviour:
     vector3DValue: {x: 0, y: 0, z: 0}
   gate: {fileID: 0}
   connectedNode: {fileID: 0}
+  id: 0
 --- !u!222 &6908063244299715715
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -453,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: -876546973899608171, guid: d6f1554d8018d4004a03f9b3735075d5, type: 3}
   m_Color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -461,7 +466,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 8520b8f1556f84c199a7596aa8e7ac98, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -717,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d97c925e2cab84087ae65970996e2ccd, type: 2}
   m_Color: {r: 0.8272817, g: 0.9056604, b: 0.055535804, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -725,7 +730,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 66473c22b690c451da21fe2c1c4bc070, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
