@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,6 +9,7 @@ public class SpellcastingHandler : MonoBehaviour
 
     IEnumerator<string> cast;
     bool casting = false;
+    public bool canCast = true;
     float timeSinceLastSyllable = 0f;
 
     [SerializeField]
@@ -35,7 +34,7 @@ public class SpellcastingHandler : MonoBehaviour
 
     void Update()
     {
-        if (castAction.WasCompletedThisFrame())
+        if (castAction.WasCompletedThisFrame() && canCast)
         {
             if (!casting)
             {
