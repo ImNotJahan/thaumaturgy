@@ -17,6 +17,8 @@ public class Node : MonoBehaviour
     public Gate gate;
     public Node connectedNode; // only is set if this is an input node
 
+    public int id;
+
     void Awake()
     {
         gismosHandler = transform.parent.parent.GetComponent<GismosHandler>();
@@ -46,5 +48,10 @@ public class Node : MonoBehaviour
     public NodeValue GetNodeValue()
     {
         return nodeValue;
+    }
+
+    public int GetId()
+    {
+        return id;
     }
 }

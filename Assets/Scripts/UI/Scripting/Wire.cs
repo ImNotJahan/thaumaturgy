@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -7,7 +8,7 @@ public class Wire : MonoBehaviour
 {
     RawImage image;
     RectTransform rectTransform;
-    GismosHandler gismosHandler;
+    public GismosHandler gismosHandler;
 
     InputAction pointAction;
     InputAction clickAction; // will be used for drawing chained wires in the future
@@ -18,6 +19,8 @@ public class Wire : MonoBehaviour
 
     public Node valueProvidingNode;
     public Node valueRecievingNode;
+
+    bool originIsRecieving;
 
     Gate originGate;
     Gate endGate;
@@ -65,12 +68,23 @@ public class Wire : MonoBehaviour
 
     public void BeginDrawing(RectTransform origin, Node originNode, GismosHandler gismosHandler)
     {
-        if (originNode.nodeType == Node.NodeType.Output)
-            valueProvidingNode = originNode;
-        else
-            valueRecievingNode = originNode;
+        BeginDrawing(origin.position, originNode, gismosHandler);
+    }
 
-        this.origin = origin.position;
+    public void BeginDrawing(Vector2 origin, Node originNode, GismosHandler gismosHandler)
+    {
+        if (originNode.nodeType == Node.NodeType.Output)
+        {
+            valueProvidingNode = originNode;
+            originIsRecieving = false;
+        }
+        else
+        {
+            valueRecievingNode = originNode;
+            originIsRecieving = true;
+        }
+
+        this.origin = origin;
         this.gismosHandler = gismosHandler;
 
         originGate = originNode.gate;
@@ -103,6 +117,8 @@ public class Wire : MonoBehaviour
             originGate.onDestroy += DestroyWire;
 
             endGate = endNode.gate;
+
+            gismosHandler.wires.Add(this);
         }
     }
 
@@ -129,6 +145,9 @@ public class Wire : MonoBehaviour
 
         valueRecievingNode.SetNodeValue(new NodeValue());
         valueRecievingNode.connectedNode = null;
+
+        gismosHandler.wires.Remove(this);
+
         Destroy(gameObject);
     }
 
@@ -155,4 +174,52 @@ public class Wire : MonoBehaviour
         origin += drag;
         end += drag;
     }
+
+    // convert the wire into a json string for saving
+    public WireData Serialize()
+    {
+        WireData data = new();
+
+        data.origin_x = origin.x;
+        data.origin_y = origin.y;
+        data.end_x = end.x;
+        data.end_y = end.y;
+        data.origin_gate = originGate.id;
+        data.end_gate = endGate.id;
+
+        if (originIsRecieving)
+        {
+            data.origin_node = valueRecievingNode.GetId();
+            data.end_node = valueProvidingNode.GetId();
+        }
+        else
+        {
+            data.origin_node = valueProvidingNode.GetId();
+            data.end_node = valueRecievingNode.GetId();
+        }
+
+        return data;
+    }
+
+    public void Deserialize(WireData data)
+    {
+        origin = new Vector2(data.origin_x, data.origin_y);
+        end = new Vector2(data.end_x, data.end_y);
+
+        BeginDrawing(origin, gismosHandler.GetGate(data.origin_gate).GetNode(data.origin_node), gismosHandler);
+        DrawLine(origin, end);
+        EndDrawing(gismosHandler.GetGate(data.end_gate).GetNode(data.origin_node));
+    }
+}
+
+public class WireData
+{
+    public float origin_x;
+    public float origin_y;
+    public float end_x;
+    public float end_y;
+    public int origin_gate;
+    public int end_gate;
+    public int origin_node;
+    public int end_node;
 }

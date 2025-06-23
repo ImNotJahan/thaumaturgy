@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -18,25 +17,35 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     public UnityAction<Vector3> onDrag;
     public UnityAction onDestroy;
 
-    protected GismosHandler gismosHandler;
+    public GismosHandler gismosHandler;
     bool placing = false;
 
     InputAction pointAction;
-    InputAction clickAction; // will be used for drawing chained wires in the future
+    InputAction clickAction;
+
+    public int id; // used during serialization
 
     protected virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
 
+        int nodeCounter = 0;
+
         foreach (Node inputNode in inputNodes)
         {
             inputNode.onNodeValueChanged += UpdateOutput;
             inputNode.gate = this;
+
+            inputNode.id = nodeCounter;
+            nodeCounter++;
         }
 
         foreach (Node outputNode in outputNodes)
         {
             outputNode.gate = this;
+
+            outputNode.id = nodeCounter;
+            nodeCounter++;
         }
 
         pointAction = InputSystem.actions.FindAction("Point");
@@ -92,6 +101,7 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     public void Place(GismosHandler gismosHandler)
     {
         this.gismosHandler = gismosHandler;
+        gismosHandler.AddGate(this);
         placing = true;
     }
 
@@ -100,14 +110,47 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             onDestroy?.Invoke();
+            gismosHandler.RemoveGate(id);
             Destroy(gameObject);
         }
     }
 
-    public abstract String GetCode();
+    public abstract string GetCode();
 
     public Node[] GetInputNodes()
     {
         return inputNodes;
     }
+
+    public virtual GateData Serialize()
+    {
+        GateData data = new();
+
+        data.position_x = rectTransform.position.x;
+        data.position_y = rectTransform.position.y;
+        data.gate_code = GetCode();
+        data.id = id;
+
+        return data;
+    }
+
+    public virtual void Deserialize(GateData data)
+    {
+        rectTransform.position = new Vector2(data.position_x, data.position_y);
+        id = data.id;
+    }
+
+    public Node GetNode(int id)
+    {
+        if (id < inputNodes.Length) return inputNodes[id];
+        return outputNodes[id - inputNodes.Length];
+    }
+}
+
+public class GateData
+{
+    public float position_x;
+    public float position_y;
+    public string gate_code;
+    public int id;
 }
