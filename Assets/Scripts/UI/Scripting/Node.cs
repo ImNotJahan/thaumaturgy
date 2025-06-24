@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,7 +17,8 @@ public class Node : MonoBehaviour
     public UnityAction onNodeValueChanged;
 
     public Gate gate;
-    public Node connectedNode; // only is set if this is an input node
+    public Node connectedNode; // used for input nodes, as each input only connects to one output
+    public List<Node> connectedNodes = new List<Node>(); // used for output nodes, as an output can have multiple inputs
     int connectedWires = 0;
 
     [SerializeField]

@@ -92,7 +92,11 @@ public class Wire : MonoBehaviour
 
     public void EndDrawing(Node endNode)
     {
-        // stop drawing if the wire is connecting to a valid node type (input -> output or output -> input)
+
+        // ensure the wire will not create a circular circut
+        if (ConnectsToGate(endNode.gate, originGate, endNode.nodeType == Node.NodeType.Input ? Node.NodeType.Output : Node.NodeType.Input)) return;
+
+        // only finish drawing if the wire is connecting to a valid node type (input -> output or output -> input)
         if (endNode.nodeType == Node.NodeType.Input && valueProvidingNode != null && endNode.GetNodeValue().IsNull() ||
             endNode.nodeType == Node.NodeType.Output && valueProvidingNode == null)
         {
@@ -101,6 +105,7 @@ public class Wire : MonoBehaviour
 
             UpdateValueRecievingNode();
             valueRecievingNode.connectedNode = valueProvidingNode;
+            valueProvidingNode.connectedNodes.Add(valueRecievingNode);
             valueProvidingNode.onNodeValueChanged += UpdateValueRecievingNode;
 
             drawing = false;
@@ -122,6 +127,30 @@ public class Wire : MonoBehaviour
             valueProvidingNode.ConnectWire();
             valueRecievingNode.ConnectWire();
         }
+    }
+
+    bool ConnectsToGate(Gate gate, Gate to, Node.NodeType toCheck)
+    {
+        if (gate.id == to.id) return true;
+
+        foreach (Node node in gate.GetNodes())
+        {
+            if (node.nodeType != toCheck) continue;
+
+            if (toCheck == Node.NodeType.Input) {
+                if (node.connectedNode == null) continue;
+                if (node.connectedNode.gate == null) continue;
+                if (ConnectsToGate(node.connectedNode.gate, to, toCheck)) return true;
+            }
+            else {
+                foreach (Node connected in node.connectedNodes)
+                {
+                    if (ConnectsToGate(connected.gate, to, toCheck)) return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void UpdateValueRecievingNode()
@@ -147,6 +176,7 @@ public class Wire : MonoBehaviour
 
         valueRecievingNode.SetNodeValue(new NodeValue());
         valueRecievingNode.connectedNode = null;
+        valueProvidingNode.connectedNodes.Remove(null);
 
         valueRecievingNode.DisconnectWire();
         valueProvidingNode.DisconnectWire();

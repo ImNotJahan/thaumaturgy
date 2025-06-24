@@ -9,6 +9,7 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     protected Node[] inputNodes;
     [SerializeField]
     protected Node[] outputNodes;
+    Node[] allNodes;
 
     protected bool canExecute = false;
 
@@ -27,6 +28,8 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
 
     protected virtual void Awake()
     {
+        allNodes = new Node[inputNodes.Length + outputNodes.Length];
+
         rectTransform = GetComponent<RectTransform>();
 
         int nodeCounter = 0;
@@ -37,6 +40,8 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
             inputNode.gate = this;
 
             inputNode.id = nodeCounter;
+            allNodes[nodeCounter] = inputNode;
+
             nodeCounter++;
         }
 
@@ -45,6 +50,8 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
             outputNode.gate = this;
 
             outputNode.id = nodeCounter;
+            allNodes[nodeCounter] = outputNode;
+
             nodeCounter++;
         }
 
@@ -144,6 +151,11 @@ public abstract class Gate : MonoBehaviour, IDragHandler, IPointerClickHandler
     {
         if (id < inputNodes.Length) return inputNodes[id];
         return outputNodes[id - inputNodes.Length];
+    }
+
+    public Node[] GetNodes()
+    {
+        return allNodes;
     }
 }
 
