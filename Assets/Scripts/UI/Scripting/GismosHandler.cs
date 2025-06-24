@@ -69,9 +69,11 @@ public class GismosHandler : MonoBehaviour
         data.gateDatas = new GateData[gates.Count];
         data.wireDatas = new WireData[wires.Count];
 
-        for (int i = 0; i < gates.Count; i++)
+        int counter = 0;
+        foreach (int key in gates.Keys)
         {
-            data.gateDatas[i] = gates[i].Serialize();
+            data.gateDatas[counter] = gates[key].Serialize();
+            counter++;
         }
 
         for (int i = 0; i < wires.Count; i++)

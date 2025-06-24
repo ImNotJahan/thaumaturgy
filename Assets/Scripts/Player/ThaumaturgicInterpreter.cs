@@ -14,12 +14,14 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     [SerializeField]
     SpellParticlesHandler spellParticlesHandler;
 
-    Dictionary<string, (Delegate fn, int arguments)> codeToFn = new();
-    Dictionary<string, string> syllables = new Dictionary<string, string>
+    readonly Dictionary<string, (Delegate fn, int arguments)> codeToFn = new();
+    readonly Dictionary<string, string> syllables = new()
     {
         {"and", "en"}, {"or", "in"}, {"not", "ta"}, {"display", "tt"},
         { "add_force", "ll"}, {"player_facing", "is"}, {"player_position", "ka"}, {"vector3", "li"},
-        { "ray", "it"}, {"object_raycast", "an"}
+        { "ray", "it"}, {"object_raycast", "an"}, {"vector_add", "ol"}, {"player_object", "ja"},
+        {"x_component", "ai"}, {"y_component", "et"}, {"z_component", "st"}, {"dot_product", "va"},
+        {"scalar_multiply", "te"}, {"add", "se"}, {"multiply", "ne"}, {"switch", "on"},
     };
 
     // Interprets over time + charges mana
@@ -35,7 +37,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
             if (codes[i] == "") continue;
             if (codes[i][0] == '>') // is constant value
             {
-                stack.Push(parseConstant(codes[i]));
+                stack.Push(ParseConstant(codes[i]));
                 yield return " ";
             }
             else
@@ -51,8 +53,9 @@ public class ThaumaturgicInterpreter : MonoBehaviour
                 {
                     stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    Debug.LogWarning(exception);
                     break;
                 }
 
@@ -63,14 +66,14 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         yield return "END";
     }
 
-    object parseConstant(string code)
+    object ParseConstant(string code)
     {
         code = code[1..];
 
         if (code == "True") return true;
         if (code == "False") return false;
 
-        if (int.TryParse(code, out int result)) return result;
+        if (float.TryParse(code, out float result)) return result;
 
         return null;
     }
@@ -84,9 +87,19 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         codeToFn["add_force"] = (new Func<Transform, Vector3, object>(AddForce), 2);
         codeToFn["player_facing"] = (new Func<Vector3>(PlayerFacing), 0);
         codeToFn["player_position"] = (new Func<Vector3>(PlayerPosition), 0);
-        codeToFn["vector3"] = (new Func<int, int, int, Vector3>(MakeVector3), 3);
+        codeToFn["vector3"] = (new Func<float, float, float, Vector3>(MakeVector3), 3);
         codeToFn["ray"] = (new Func<Vector3, Vector3, Ray>(MakeRay), 2);
-        codeToFn["object_raycast"] = (new Func<Ray, int, object>(ObjectRaycast), 2);
+        codeToFn["object_raycast"] = (new Func<Ray, float, object>(ObjectRaycast), 2);
+        codeToFn["x_component"] = (new Func<Vector3, float>(XComponent), 1);
+        codeToFn["y_component"] = (new Func<Vector3, float>(YComponent), 1);
+        codeToFn["z_component"] = (new Func<Vector3, float>(ZComponent), 1);
+        codeToFn["player_object"] = (new Func<Transform>(PlayerObject), 0);
+        codeToFn["vector_add"] = (new Func<Vector3, Vector3, Vector3>(VectorAdd), 2);
+        codeToFn["dot_product"] = (new Func<Vector3, Vector3, float>(DotProduct), 2);
+        codeToFn["scalar_multiply"] = (new Func<Vector3, float, Vector3>(ScalarMultiply), 2);
+        codeToFn["add"] = (new Func<float, float, float>(Add), 2);
+        codeToFn["multiply"] = (new Func<float, float, float>(Multiply), 2);
+        codeToFn["switch"] = (new Func<object, object, bool, object>(Switch), 3);
     }
 
     bool And(bool in1, bool in2)
@@ -120,7 +133,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         return cameraTransform.position;
     }
 
-    Transform ObjectRaycast(Ray ray, int maxDistance)
+    Transform ObjectRaycast(Ray ray, float maxDistance)
     {
         spellParticlesHandler.DrawRay(ray, maxDistance);
 
@@ -143,7 +156,7 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         return null;
     }
 
-    Vector3 MakeVector3(int x, int y, int z)
+    Vector3 MakeVector3(float x, float y, float z)
     {
         return new Vector3(x, y, z);
     }
@@ -151,5 +164,56 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     Ray MakeRay(Vector3 position, Vector3 rotation)
     {
         return new Ray(position, rotation);
+    }
+
+    Vector3 ScalarMultiply(Vector3 vector, float scalar)
+    {
+        return vector * scalar;
+    }
+
+    float DotProduct(Vector3 vector1, Vector3 vector2)
+    {
+        return Vector3.Dot(vector1, vector2);
+    }
+
+    float XComponent(Vector3 input)
+    {
+        return input.x;
+    }
+
+    float YComponent(Vector3 input)
+    {
+        return input.y;
+    }
+
+    float ZComponent(Vector3 input)
+    {
+        return input.z;
+    }
+
+    Vector3 VectorAdd(Vector3 vector1, Vector3 vector2)
+    {
+        return vector1 + vector2;
+    }
+
+    Transform PlayerObject()
+    {
+        return player.transform;
+    }
+
+    float Add(float input1, float input2)
+    {
+        return input1 + input2;
+    }
+
+    float Multiply(float input1, float input2)
+    {
+        return input1 * input2;
+    }
+
+    object Switch(object input1, object input2, bool input3)
+    {
+        if (input3) return input2;
+        return input1;
     }
 }
