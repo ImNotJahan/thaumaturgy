@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,12 +17,46 @@ public class Node : MonoBehaviour
 
     public Gate gate;
     public Node connectedNode; // only is set if this is an input node
+    int connectedWires = 0;
+
+    [SerializeField]
+    TextMeshProUGUI inputText;
+    [SerializeField]
+    TextMeshProUGUI outputText;
 
     public int id;
 
     void Awake()
     {
         gismosHandler = transform.parent.parent.GetComponent<GismosHandler>();
+
+        CheckText();
+    }
+
+    void CheckText()
+    {
+        if (connectedWires == 0)
+        {
+            if (nodeType == NodeType.Input)
+            {
+                outputText.enabled = false;
+                inputText.enabled = true;
+                inputText.text = gameObject.name;
+
+                return;
+            }
+            else if (nodeType == NodeType.Output)
+            {
+                outputText.enabled = true;
+                inputText.enabled = false;
+                outputText.text = gameObject.name;
+
+                return;
+            }
+        }
+
+        outputText.enabled = false;
+        inputText.enabled = false;
     }
 
     public void OnClick()
@@ -53,5 +88,19 @@ public class Node : MonoBehaviour
     public int GetId()
     {
         return id;
+    }
+
+    public void ConnectWire()
+    {
+        connectedWires++;
+
+        CheckText();
+    }
+
+    public void DisconnectWire()
+    {
+        connectedWires--;
+
+        CheckText();
     }
 }

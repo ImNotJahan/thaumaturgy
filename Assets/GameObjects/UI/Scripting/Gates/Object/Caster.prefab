@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5476631561675510817}
   - component: {fileID: 5453338306940702960}
   m_Layer: 5
-  m_Name: Player object
+  m_Name: Caster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player object
+  m_text: Caster
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b37d4f16e4fa46718ccc9b528bd7e54, type: 2}
   m_sharedMaterial: {fileID: -2130854420283788559, guid: 7b37d4f16e4fa46718ccc9b528bd7e54, type: 2}
@@ -359,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8534109725417551047, guid: d8a4678513b1746788ab2a8e69250886, type: 3}
       propertyPath: m_Name
-      value: Output
+      value: Object
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

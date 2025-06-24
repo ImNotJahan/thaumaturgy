@@ -112,13 +112,15 @@ public class Wire : MonoBehaviour
 
             endNode.gate.onDestroy += DestroyWire;
 
-
             originGate.onDrag += OnOriginDrag;
             originGate.onDestroy += DestroyWire;
 
             endGate = endNode.gate;
 
             gismosHandler.wires.Add(this);
+
+            valueProvidingNode.ConnectWire();
+            valueRecievingNode.ConnectWire();
         }
     }
 
@@ -145,6 +147,9 @@ public class Wire : MonoBehaviour
 
         valueRecievingNode.SetNodeValue(new NodeValue());
         valueRecievingNode.connectedNode = null;
+
+        valueRecievingNode.DisconnectWire();
+        valueProvidingNode.DisconnectWire();
 
         gismosHandler.wires.Remove(this);
 
