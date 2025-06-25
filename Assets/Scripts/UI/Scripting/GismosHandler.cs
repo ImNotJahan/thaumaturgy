@@ -45,6 +45,10 @@ public class GismosHandler : MonoBehaviour
 
         foreach (Gate thaumaturgicGate in thaumaturgicGates)
         {
+            // we add this so that the interpreter will know when a function starts
+            if (thaumaturgicGate.GetCode() == "define")
+                transpiledCode.Append("start_func ");
+            
             ExploreGates(thaumaturgicGate, transpiledCode);
         }
 

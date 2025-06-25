@@ -63,4 +63,16 @@ public class NodeValue
 
         return value;
     }
+
+    public bool Compare(NodeValue other)
+    {
+        if (other.valueType != valueType) return false;
+
+        return valueType switch
+        {
+            ValueType.Boolean => other.booleanValue == booleanValue,
+            ValueType.Number => other.numberValue == numberValue,
+            _ => false
+        };
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -22,48 +23,94 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         { "ray", "it"}, {"object_raycast", "an"}, {"vector_add", "ol"}, {"player_object", "ja"},
         {"x_component", "ai"}, {"y_component", "et"}, {"z_component", "st"}, {"dot_product", "va"},
         {"scalar_multiply", "te"}, {"add", "se"}, {"multiply", "ne"}, {"switch", "on"},
+        {"save", "el"}, {"load", "oi"}, {"call", "le"}, {"define", "al"},
+        {"equals", "ti"}, {"less_than", "ut"},
     };
+
+    readonly Dictionary<float, object> variables = new();
+    readonly Dictionary<float, List<string>> functions = new();
+    
+    enum InterpretState {Succeeded, Errored, Passed, FunctionStart, FunctionCall};
 
     // Interprets over time + charges mana
     public IEnumerable<string> InterpretFancily(string spell, Player player)
     {
         this.player = player;
 
-        string[] codes = spell.Split(' ');
+        List<string> codes = spell.Split(' ').ToList();
         Stack stack = new Stack();
 
-        for (int i = 0; i < codes.Length; i++)
+        for (int i = 0; i < codes.Count; i++)
         {
-            if (codes[i] == "") continue;
-            if (codes[i][0] == '>') // is constant value
+            (string syllable, InterpretState state) = InterpretCode(codes[i], stack);
+
+            if (state == InterpretState.Passed) continue;
+            if (state == InterpretState.Errored) break;
+            if (state == InterpretState.Succeeded) yield return syllable;
+            if (state == InterpretState.FunctionStart)
             {
-                stack.Push(ParseConstant(codes[i]));
-                yield return " ";
+                List<string> func = new();
+
+                while (i + 1 < codes.Count)
+                {
+                    i++;
+
+                    if (codes[i] == "define") break;
+                    func.Add(codes[i]);
+                }
+
+                functions[(float)ParseConstant(func[func.Count - 1])] = func;
+                func.RemoveAt(func.Count - 1);
+
+                yield return syllables["define"];
             }
-            else
+            if (state == InterpretState.FunctionCall)
             {
-                object[] arguments = new object[codeToFn[codes[i]].arguments];
-
-                for (int j = arguments.Length - 1; j >= 0; j--)
-                {
-                    arguments[j] = stack.Pop();
-                }
-
-                try
-                {
-                    stack.Push(codeToFn[codes[i]].fn.DynamicInvoke(arguments));
-                }
-                catch (Exception exception)
-                {
-                    Debug.LogWarning(exception);
-                    break;
-                }
-
-                yield return syllables[codes[i]];
+                codes.InsertRange(i + 1, functions[(float)stack.Pop()]);
+                yield return syllables["call"];
             }
         }
 
         yield return "END";
+    }
+
+    (string, InterpretState) InterpretCode(string code, Stack stack)
+    {
+        if (code == "") return ("", InterpretState.Passed);
+        if (code[0] == '>') // is constant value
+        {
+            stack.Push(ParseConstant(code));
+            return (" ", InterpretState.Succeeded);
+        }
+        else if (code == "start_func")
+        {
+            return ("", InterpretState.FunctionStart);
+        }
+        else if (code == "call")
+        {
+            return ("", InterpretState.FunctionCall);
+        }
+        else
+        {
+            object[] arguments = new object[codeToFn[code].arguments];
+
+            for (int j = arguments.Length - 1; j >= 0; j--)
+            {
+                arguments[j] = stack.Pop();
+            }
+
+            try
+            {
+                stack.Push(codeToFn[code].fn.DynamicInvoke(arguments));
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning(exception);
+                return ("", InterpretState.Errored);
+            }
+
+            return (syllables[code], InterpretState.Succeeded);
+        }
     }
 
     object ParseConstant(string code)
@@ -100,6 +147,10 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         codeToFn["add"] = (new Func<float, float, float>(Add), 2);
         codeToFn["multiply"] = (new Func<float, float, float>(Multiply), 2);
         codeToFn["switch"] = (new Func<object, object, bool, object>(Switch), 3);
+        codeToFn["equals"] = (new Func<object, object, bool>(AreEqual), 2);
+        codeToFn["less_than"] = (new Func<float, float, bool>(LessThan), 2);
+        codeToFn["save"] = (new Func<object, float, object>(Save), 2);
+        codeToFn["load"] = (new Func<float, object>(Load), 1);
     }
 
     bool And(bool in1, bool in2)
@@ -215,5 +266,27 @@ public class ThaumaturgicInterpreter : MonoBehaviour
     {
         if (input3) return input2;
         return input1;
+    }
+
+    bool AreEqual(object input1, object input2)
+    {
+        return input1 == input2;
+    }
+
+    bool LessThan(float input1, float input2)
+    {
+        return input1 < input2;
+    }
+
+    object Save(object value, float id)
+    {
+        variables[id] = value;
+
+        return null;
+    }
+
+    object Load(float id)
+    {
+        return variables[id];
     }
 }
