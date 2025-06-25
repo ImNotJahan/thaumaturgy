@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 
@@ -49,6 +47,7 @@ public class GismosHandler : MonoBehaviour
             if (thaumaturgicGate.GetCode() == "define")
                 transpiledCode.Append("start_func ");
             
+
             ExploreGates(thaumaturgicGate, transpiledCode);
         }
 
@@ -58,9 +57,23 @@ public class GismosHandler : MonoBehaviour
 
     void ExploreGates(Gate gate, StringBuilder stringBuilder)
     {
-        foreach (Node input in gate.GetInputNodes())
+        if (gate.GetCode() == "if")
         {
-            ExploreGates(input.connectedNode.gate, stringBuilder);
+            Node[] inputNodes = gate.GetInputNodes();
+            stringBuilder.Append("condition_start ");
+
+            ExploreGates(inputNodes[0].connectedNode.gate, stringBuilder);
+
+            stringBuilder.Append("condition_end ");
+
+            ExploreGates(inputNodes[1].connectedNode.gate, stringBuilder);
+        }
+        else
+        {
+            foreach (Node input in gate.GetInputNodes())
+            {
+                ExploreGates(input.connectedNode.gate, stringBuilder);
+            }
         }
 
         stringBuilder.Append(gate.GetCode());
@@ -103,7 +116,11 @@ public class GismosHandler : MonoBehaviour
             gateComponent.Deserialize(gateData);
 
             gates.Add(gateData.id, gateComponent);
+
+            if (gateComponent.id > gateCount) gateCount = gateComponent.id;
         }
+
+        gateCount++;
 
         foreach (WireData wireData in data.wireDatas)
         {
@@ -141,6 +158,8 @@ public class GismosHandler : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        gateCount = 0;
     }
 
     GameObject GetGateObjectFromCode(string code)

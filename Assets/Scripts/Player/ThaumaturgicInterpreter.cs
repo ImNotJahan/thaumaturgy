@@ -24,13 +24,13 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         {"x_component", "ai"}, {"y_component", "et"}, {"z_component", "st"}, {"dot_product", "va"},
         {"scalar_multiply", "te"}, {"add", "se"}, {"multiply", "ne"}, {"switch", "on"},
         {"save", "el"}, {"load", "oi"}, {"call", "le"}, {"define", "al"},
-        {"equals", "ti"}, {"less_than", "ut"},
+        {"equals", "ti"}, {"less_than", "ut"}, {"if", "mi"}
     };
 
     readonly Dictionary<float, object> variables = new();
     readonly Dictionary<float, List<string>> functions = new();
     
-    enum InterpretState {Succeeded, Errored, Passed, FunctionStart, FunctionCall};
+    enum InterpretState {Succeeded, Errored, Passed, FunctionStart, FunctionCall, ConditionStart, ExecuteIf};
 
     // Interprets over time + charges mana
     public IEnumerable<string> InterpretFancily(string spell, Player player)
@@ -40,14 +40,16 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         List<string> codes = spell.Split(' ').ToList();
         Stack stack = new Stack();
 
+        List<string> conditionBody = new();
+
         for (int i = 0; i < codes.Count; i++)
         {
             (string syllable, InterpretState state) = InterpretCode(codes[i], stack);
 
             if (state == InterpretState.Passed) continue;
-            if (state == InterpretState.Errored) break;
-            if (state == InterpretState.Succeeded) yield return syllable;
-            if (state == InterpretState.FunctionStart)
+            else if (state == InterpretState.Errored) break;
+            else if (state == InterpretState.Succeeded) yield return syllable;
+            else if (state == InterpretState.FunctionStart)
             {
                 List<string> func = new();
 
@@ -64,10 +66,26 @@ public class ThaumaturgicInterpreter : MonoBehaviour
 
                 yield return syllables["define"];
             }
-            if (state == InterpretState.FunctionCall)
+            else if (state == InterpretState.FunctionCall)
             {
                 codes.InsertRange(i + 1, functions[(float)stack.Pop()]);
                 yield return syllables["call"];
+            }
+            else if (state == InterpretState.ExecuteIf)
+            {
+                codes.InsertRange(i + 1, conditionBody);
+            }
+            else if (state == InterpretState.ConditionStart)
+            {
+                conditionBody = new();
+
+                while (i + 1 < codes.Count)
+                {
+                    i++;
+
+                    if (codes[i] == "condition_end") break;
+                    conditionBody.Add(codes[i]);
+                }
             }
         }
 
@@ -89,6 +107,15 @@ public class ThaumaturgicInterpreter : MonoBehaviour
         else if (code == "call")
         {
             return ("", InterpretState.FunctionCall);
+        }
+        else if (code == "condition_start")
+        {
+            return ("", InterpretState.ConditionStart);
+        }
+        else if (code == "if")
+        {
+            if ((bool)stack.Pop() == true) return (syllables["if"], InterpretState.ExecuteIf);
+            return (syllables["if"], InterpretState.Succeeded);
         }
         else
         {

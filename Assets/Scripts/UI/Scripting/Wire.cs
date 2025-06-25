@@ -92,7 +92,6 @@ public class Wire : MonoBehaviour
 
     public void EndDrawing(Node endNode)
     {
-
         // ensure the wire will not create a circular circut
         if (ConnectsToGate(endNode.gate, originGate, endNode.nodeType == Node.NodeType.Input ? Node.NodeType.Output : Node.NodeType.Input)) return;
 
@@ -137,12 +136,14 @@ public class Wire : MonoBehaviour
         {
             if (node.nodeType != toCheck) continue;
 
-            if (toCheck == Node.NodeType.Input) {
+            if (toCheck == Node.NodeType.Input)
+            {
                 if (node.connectedNode == null) continue;
                 if (node.connectedNode.gate == null) continue;
                 if (ConnectsToGate(node.connectedNode.gate, to, toCheck)) return true;
             }
-            else {
+            else
+            {
                 foreach (Node connected in node.connectedNodes)
                 {
                     if (ConnectsToGate(connected.gate, to, toCheck)) return true;
@@ -176,7 +177,7 @@ public class Wire : MonoBehaviour
 
         valueRecievingNode.SetNodeValue(new NodeValue());
         valueRecievingNode.connectedNode = null;
-        valueProvidingNode.connectedNodes.Remove(null);
+        valueProvidingNode.connectedNodes.Remove(valueRecievingNode);
 
         valueRecievingNode.DisconnectWire();
         valueProvidingNode.DisconnectWire();

@@ -7207,6 +7207,8 @@ MonoBehaviour:
     gate: {fileID: 7876632892322552749, guid: 60c421d49e96340a49d0e5506e20483f, type: 3}
   - code: less_than
     gate: {fileID: 2406752186044526171, guid: 9371f6b87a984482cbce05c07d1d87a5, type: 3}
+  - code: if
+    gate: {fileID: 8167082118078146958, guid: 21d6b7a2388c6488092714545d94f5fd, type: 3}
   wireGameObject: {fileID: 2229498425545982577, guid: 09e39fab3c4304eec8dda333127985df, type: 3}
 --- !u!1 &951499419
 GameObject:
@@ -9291,6 +9293,7 @@ MonoBehaviour:
     - {fileID: 3668536526190772941, guid: 13c4409d2d9f94101b04fee59a775d29, type: 3}
     - {fileID: 7876632892322552749, guid: 60c421d49e96340a49d0e5506e20483f, type: 3}
     - {fileID: 2406752186044526171, guid: 9371f6b87a984482cbce05c07d1d87a5, type: 3}
+    - {fileID: 8167082118078146958, guid: 21d6b7a2388c6488092714545d94f5fd, type: 3}
   - array:
     - {fileID: 8958989993940541345, guid: 250de16a549e042dea26d37c52ce82a3, type: 3}
     - {fileID: 114966889198066459, guid: 888f4ff1138a74d83b84df75556d161c, type: 3}
