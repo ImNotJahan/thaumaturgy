@@ -14,7 +14,7 @@ public class GismosHandler : MonoBehaviour
 
     public float canvasScale = 1;
 
-    public List<Gate> thaumaturgicGates = new();
+    List<Gate> thaumaturgicGates = new();
     Dictionary<int, Gate> gates = new();
     public List<Wire> wires = new();
 
@@ -23,6 +23,8 @@ public class GismosHandler : MonoBehaviour
     [SerializeField]
     GameObject wireGameObject;
     Dictionary<string, GameObject> codeToGateObject = new();
+
+    public Action<List<Gate>> thaumaturgicGatesChanged;
 
     void Start()
     {
@@ -46,7 +48,7 @@ public class GismosHandler : MonoBehaviour
             // we add this so that the interpreter will know when a function starts
             if (thaumaturgicGate.GetCode() == "define")
                 transpiledCode.Append("start_func ");
-            
+
 
             ExploreGates(thaumaturgicGate, transpiledCode);
         }
@@ -97,7 +99,7 @@ public class GismosHandler : MonoBehaviour
         {
             data.wireDatas[i] = wires[i].Serialize();
         }
-        
+
         JsonDataService.SaveData(data, "spell_designs", spellNameInputField.text + ".json");
     }
 
@@ -154,6 +156,8 @@ public class GismosHandler : MonoBehaviour
         gates = new();
         wires = new();
 
+        SetThaumaturgicGates(new());
+
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
@@ -166,6 +170,29 @@ public class GismosHandler : MonoBehaviour
     {
         if (code[0] == '#') return codeToGateObject["constant_number"];
         return codeToGateObject[code];
+    }
+
+    public void AddThaumaturgicGate(ThaumaturgicGate gate)
+    {
+        thaumaturgicGates.Add(gate);
+        thaumaturgicGatesChanged?.Invoke(thaumaturgicGates);
+    }
+
+    public void RemoveThaumaturgicGate(ThaumaturgicGate gate)
+    {
+        thaumaturgicGates.Remove(gate);
+        thaumaturgicGatesChanged?.Invoke(thaumaturgicGates);
+    }
+
+    public List<Gate> GetThaumaturgicGates()
+    {
+        return thaumaturgicGates;
+    }
+
+    public void SetThaumaturgicGates(List<Gate> gates)
+    {
+        thaumaturgicGates = gates;
+        thaumaturgicGatesChanged?.Invoke(thaumaturgicGates);
     }
 }
 

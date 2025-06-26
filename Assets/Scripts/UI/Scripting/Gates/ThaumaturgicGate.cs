@@ -9,9 +9,9 @@ public abstract class ThaumaturgicGate : Gate
     {
         if (gismosHandler != null)
         {
-            gismosHandler.thaumaturgicGates.Add(this);
+            gismosHandler.AddThaumaturgicGate(this);
 
-            onDestroy += () => gismosHandler.thaumaturgicGates.Remove(this);
+            onDestroy += () => gismosHandler.RemoveThaumaturgicGate(this);
         }
         else
         {
